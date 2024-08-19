@@ -670,21 +670,27 @@ public final class TooltipRenderer {
         var buffer = gr.bufferSource().getBuffer(TooltipRenderType.tooltip());
 
         // we expect local coordinates, concat pose with model view
+        /*
         RenderSystem.getModelViewStack().pushPose();
         RenderSystem.getModelViewStack().mulPoseMatrix(pose);
         RenderSystem.getModelViewStack().translate(centerX, centerY, 0);
+        */
+        var matrix4fStack = RenderSystem.getModelViewStack();
+        matrix4fStack.pushMatrix();
+        matrix4fStack.mul(pose);
+        matrix4fStack.translate(centerX, centerY, 0);
         RenderSystem.applyModelViewMatrix();
         // estimate the draw bounds, half stroke width + 0.5 AA bloat + shadow spread
         float extent = sBorderWidth / 2f + 0.5f + shadowRadius * 1.2f;
         float extentX = sizeX + extent;
         float extentY = sizeY + extent;
-        buffer.vertex(extentX, extentY, 0).endVertex();
-        buffer.vertex(extentX, -extentY, 0).endVertex();
-        buffer.vertex(-extentX, -extentY, 0).endVertex();
-        buffer.vertex(-extentX, extentY, 0).endVertex();
+        buffer.addVertex(extentX, extentY, 0);
+        buffer.addVertex(extentX, -extentY, 0);
+        buffer.addVertex(-extentX, -extentY, 0);
+        buffer.addVertex(-extentX, extentY, 0);
 
         gr.flush();
-        RenderSystem.getModelViewStack().popPose();
+        matrix4fStack.popMatrix();
         RenderSystem.applyModelViewMatrix();
 
         if (titleGap && sTitleBreak) {
@@ -759,32 +765,32 @@ public final class TooltipRenderer {
         int r = ((color >> 16) & 0xff);
         int g = ((color >> 8) & 0xff);
         int b = (color & 0xff);
-        buffer.vertex(pose, right, bottom, 0)
-                .color(r, g, b, a).endVertex();
+        buffer.addVertex(pose, right, bottom, 0)
+                .setColor(r, g, b, a);
 
         color = colorUR;
         a = (color >>> 24);
         r = ((color >> 16) & 0xff);
         g = ((color >> 8) & 0xff);
         b = (color & 0xff);
-        buffer.vertex(pose, right, top, 0)
-                .color(r, g, b, a).endVertex();
+        buffer.addVertex(pose, right, top, 0)
+                .setColor(r, g, b, a);
 
         color = colorUL;
         a = (color >>> 24);
         r = ((color >> 16) & 0xff);
         g = ((color >> 8) & 0xff);
         b = (color & 0xff);
-        buffer.vertex(pose, left, top, 0)
-                .color(r, g, b, a).endVertex();
+        buffer.addVertex(pose, left, top, 0)
+                .setColor(r, g, b, a);
 
         color = colorLL;
         a = (color >>> 24);
         r = ((color >> 16) & 0xff);
         g = ((color >> 8) & 0xff);
         b = (color & 0xff);
-        buffer.vertex(pose, left, bottom, 0)
-                .color(r, g, b, a).endVertex();
+        buffer.addVertex(pose, left, bottom, 0)
+                .setColor(r, g, b, a);
 
         gr.flush();
     }

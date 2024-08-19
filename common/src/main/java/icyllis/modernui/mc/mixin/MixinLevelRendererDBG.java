@@ -22,6 +22,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
@@ -43,27 +44,25 @@ import static icyllis.modernui.ModernUI.LOGGER;
 public class MixinLevelRendererDBG {
 
     @Inject(method = "renderLevel", at = @At(value = "CONSTANT", args = "stringValue=blockentities", ordinal = 0))
-    private void afterEntities(PoseStack poseStack, float partialTicks, long frameTimeNanos, boolean renderBlockOutline,
-                               Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projection,
-                               CallbackInfo ci) {
+    private void afterEntities(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f $$5, Matrix4f $$6, CallbackInfo ci) {
         if (Screen.hasAltDown() &&
                 InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_KP_7)) {
             LOGGER.info("Capture from MixinLevelRendererDBG.afterEntities()");
-            LOGGER.info("Param PoseStack.last().pose(): {}", poseStack.last().pose());
+            //LOGGER.info("Param PoseStack.last().pose(): {}", poseStack.last().pose());
             LOGGER.info("Param Camera.getPosition(): {}, pitch: {}, yaw: {}, rot: {}, detached: {}",
                     camera.getPosition(), camera.getXRot(), camera.getYRot(), camera.rotation(), camera.isDetached());
-            LOGGER.info("Param ProjectionMatrix: {}", projection);
-            LOGGER.info("RenderSystem.getModelViewStack().last().pose(): {}",
-                    RenderSystem.getModelViewStack().last().pose());
+            //LOGGER.info("Param ProjectionMatrix: {}", projection);
+            //LOGGER.info("RenderSystem.getModelViewStack().last().pose(): {}",
+            //        RenderSystem.getModelViewStack().last().pose());
             LOGGER.info("RenderSystem.getModelViewMatrix(): {}", RenderSystem.getModelViewMatrix());
-            LOGGER.info("RenderSystem.getInverseViewRotationMatrix: {}", RenderSystem.getInverseViewRotationMatrix());
+            //LOGGER.info("RenderSystem.getInverseViewRotationMatrix: {}", RenderSystem.getInverseViewRotationMatrix());
             LOGGER.info("GameRenderer.getMainCamera().getPosition(): {}, pitch: {}, yaw: {}, rot: {}, detached: {}",
                     Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(),
                     camera.getXRot(), camera.getYRot(), camera.rotation(), camera.isDetached());
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null) {
                 LOGGER.info("LocalPlayer: yaw: {}, yawHead: {}, eyePos: {}",
-                        player.getYRot(), player.getYHeadRot(), player.getEyePosition(partialTicks));
+                        player.getYRot(), player.getYHeadRot(), player.getEyePosition(deltaTracker.getGameTimeDeltaPartialTick(true)));
             }
             Entity cameraEntity = Minecraft.getInstance().cameraEntity;
             if (cameraEntity != null) {

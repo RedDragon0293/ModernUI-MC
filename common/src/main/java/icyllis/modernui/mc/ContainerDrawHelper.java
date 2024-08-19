@@ -156,7 +156,7 @@ public final class ContainerDrawHelper {
             RenderSystem.bindTexture(0);
             RenderSystem.enableCull();
             PoseStack localTransform = new PoseStack();
-            localTransform.mulPoseMatrix(pose);
+            localTransform.mulPose(pose);
             MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
             minecraft.getItemRenderer().render(item, ItemDisplayContext.GUI, false, localTransform, bufferSource,
                     LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model);

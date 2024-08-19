@@ -22,6 +22,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import icyllis.modernui.mc.text.TextLayoutEngine;
 import icyllis.modernui.mc.text.TextRenderType;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.*;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.*;
@@ -42,15 +43,7 @@ public class MixinLevelRenderer {
     @Inject(method = "renderLevel",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/OutlineBufferSource;endOutlineBatch()V"))
-    private void endTextBatch(PoseStack poseStack,
-                              float partialTick,
-                              long finishNanoTime,
-                              boolean renderBlockOutline,
-                              Camera camera,
-                              GameRenderer gameRenderer,
-                              LightTexture lightTexture,
-                              Matrix4f projectionMatrix,
-                              CallbackInfo ci) {
+    private void endTextBatch(DeltaTracker $$0, boolean $$1, Camera $$2, GameRenderer $$3, LightTexture $$4, Matrix4f $$5, Matrix4f $$6, CallbackInfo ci) {
         if (TextLayoutEngine.sUseTextShadersInWorld) {
             TextRenderType firstSDFFillType = TextRenderType.getFirstSDFFillType();
             TextRenderType firstSDFStrokeType = TextRenderType.getFirstSDFStrokeType();

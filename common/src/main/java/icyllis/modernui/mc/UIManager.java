@@ -666,9 +666,9 @@ public abstract class UIManager implements LifecycleOwner {
             LOGGER.info(MARKER, "Load post-processing effect");
             final ResourceLocation effect;
             if (InputConstants.isKeyDown(mWindow.getWindow(), GLFW_KEY_RIGHT_SHIFT)) {
-                effect = new ResourceLocation("shaders/post/grayscale.json");
+                effect = ResourceLocation.parse("shaders/post/grayscale.json");
             } else {
-                effect = new ResourceLocation("shaders/post/radial_blur.json");
+                effect = ResourceLocation.parse("shaders/post/radial_blur.json");
             }
             MuiModApi.get().loadEffect(minecraft.gameRenderer, effect);
         } else {

@@ -23,6 +23,7 @@ import icyllis.modernui.graphics.MathUtil;
 import icyllis.modernui.graphics.font.BakedGlyph;
 import icyllis.modernui.graphics.text.Font;
 import icyllis.modernui.util.SparseArray;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import org.joml.Matrix4f;
 
@@ -315,7 +316,7 @@ public class TextLayout {
      * @param preferredMode a render mode, normal, see through or SDF
      * @param polygonOffset polygon offset layering requested?
      * @param bgColor       the background color of the text in 0xAARRGGBB format
-     * @param packedLight   see {@link net.minecraft.client.renderer.LightTexture}
+     * @param packedLight   see {@link LightTexture}
      * @return the total advance, always positive
      */
     public float drawText(@Nonnull final Matrix4f matrix,
@@ -479,26 +480,22 @@ public class TextLayout {
                 upSkew = 0.25f * ascent;
                 downSkew = 0.25f * (ascent - h);
             }
-            builder.vertex(matrix, rx + upSkew, ry, 0)
-                    .color(r, g, b, a)
-                    .uv(glyph.u1, glyph.v1)
-                    .uv2(packedLight)
-                    .endVertex();
-            builder.vertex(matrix, rx + downSkew, ry + h, 0)
-                    .color(r, g, b, a)
-                    .uv(glyph.u1, glyph.v2)
-                    .uv2(packedLight)
-                    .endVertex();
-            builder.vertex(matrix, rx + w + downSkew, ry + h, 0)
-                    .color(r, g, b, a)
-                    .uv(glyph.u2, glyph.v2)
-                    .uv2(packedLight)
-                    .endVertex();
-            builder.vertex(matrix, rx + w + upSkew, ry, 0)
-                    .color(r, g, b, a)
-                    .uv(glyph.u2, glyph.v1)
-                    .uv2(packedLight)
-                    .endVertex();
+            builder.addVertex(matrix, rx + upSkew, ry, 0)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u1, glyph.v1)
+                    .setLight(packedLight);
+            builder.addVertex(matrix, rx + downSkew, ry + h, 0)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u1, glyph.v2)
+                    .setLight(packedLight);
+            builder.addVertex(matrix, rx + w + downSkew, ry + h, 0)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u2, glyph.v2)
+                    .setLight(packedLight);
+            builder.addVertex(matrix, rx + w + upSkew, ry, 0)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u2, glyph.v1)
+                    .setLight(packedLight);
         }
 
         builder = null;
@@ -545,14 +542,14 @@ public class TextLayout {
             if (builder == null) {
                 builder = source.getBuffer(EffectRenderType.getRenderType(seeThrough));
             }
-            builder.vertex(matrix, x - 1, top + 9, TextRenderEffect.EFFECT_DEPTH)
-                    .color(r, g, b, a).uv(0, 1).uv2(packedLight).endVertex();
-            builder.vertex(matrix, x + mTotalAdvance + 1, top + 9, TextRenderEffect.EFFECT_DEPTH)
-                    .color(r, g, b, a).uv(1, 1).uv2(packedLight).endVertex();
-            builder.vertex(matrix, x + mTotalAdvance + 1, top - 1, TextRenderEffect.EFFECT_DEPTH)
-                    .color(r, g, b, a).uv(1, 0).uv2(packedLight).endVertex();
-            builder.vertex(matrix, x - 1, top - 1, TextRenderEffect.EFFECT_DEPTH)
-                    .color(r, g, b, a).uv(0, 0).uv2(packedLight).endVertex();
+            builder.addVertex(matrix, x - 1, top + 9, TextRenderEffect.EFFECT_DEPTH)
+                    .setColor(r, g, b, a).setUv(0, 1).setLight(packedLight);
+            builder.addVertex(matrix, x + mTotalAdvance + 1, top + 9, TextRenderEffect.EFFECT_DEPTH)
+                    .setColor(r, g, b, a).setUv(1, 1).setLight(packedLight);
+            builder.addVertex(matrix, x + mTotalAdvance + 1, top - 1, TextRenderEffect.EFFECT_DEPTH)
+                    .setColor(r, g, b, a).setUv(1, 0).setLight(packedLight);
+            builder.addVertex(matrix, x - 1, top - 1, TextRenderEffect.EFFECT_DEPTH)
+                    .setColor(r, g, b, a).setUv(0, 0).setLight(packedLight);
         }
 
         return mTotalAdvance;
@@ -640,26 +637,26 @@ public class TextLayout {
             }
             float uBloat = (glyph.u2 - glyph.u1) / glyph.width;
             float vBloat = (glyph.v2 - glyph.v1) / glyph.height;
-            builder.vertex(matrix, rx - sBloat, ry - sBloat, 0.001f)
-                    .color(r, g, b, a)
-                    .uv(glyph.u1 - uBloat, glyph.v1 - vBloat)
-                    .uv2(packedLight)
-                    .endVertex();
-            builder.vertex(matrix, rx - sBloat, ry + h + sBloat, 0.001f)
-                    .color(r, g, b, a)
-                    .uv(glyph.u1 - uBloat, glyph.v2 + vBloat)
-                    .uv2(packedLight)
-                    .endVertex();
-            builder.vertex(matrix, rx + w + sBloat, ry + h + sBloat, 0)
-                    .color(r, g, b, a)
-                    .uv(glyph.u2 + uBloat, glyph.v2 + vBloat)
-                    .uv2(packedLight)
-                    .endVertex();
-            builder.vertex(matrix, rx + w + sBloat, ry - sBloat, 0)
-                    .color(r, g, b, a)
-                    .uv(glyph.u2 + uBloat, glyph.v1 - vBloat)
-                    .uv2(packedLight)
-                    .endVertex();
+            builder.addVertex(matrix, rx - sBloat, ry - sBloat, 0.001f)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u1 - uBloat, glyph.v1 - vBloat)
+                    .setLight(packedLight);
+                    //.endVertex();
+            builder.addVertex(matrix, rx - sBloat, ry + h + sBloat, 0.001f)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u1 - uBloat, glyph.v2 + vBloat)
+                    .setLight(packedLight);
+                    //.endVertex();
+            builder.addVertex(matrix, rx + w + sBloat, ry + h + sBloat, 0)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u2 + uBloat, glyph.v2 + vBloat)
+                    .setLight(packedLight);
+                    //.endVertex();
+            builder.addVertex(matrix, rx + w + sBloat, ry - sBloat, 0)
+                    .setColor(r, g, b, a)
+                    .setUv(glyph.u2 + uBloat, glyph.v1 - vBloat)
+                    .setLight(packedLight);
+                    //.endVertex();
         }
     }
 

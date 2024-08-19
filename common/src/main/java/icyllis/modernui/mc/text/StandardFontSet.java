@@ -74,7 +74,7 @@ public class StandardFontSet extends FontSet {
     }
 
     public void reload(@Nonnull FontCollection fontCollection, int newResLevel) {
-        super.reload(Collections.emptyList());
+        super.reload(Collections.emptySet());
         mFamilies = fontCollection.getFamilies();
         invalidateCache(newResLevel);
     }
@@ -259,7 +259,7 @@ public class StandardFontSet extends FontSet {
     public static class StandardBakedGlyph extends BakedGlyph {
 
         private static final GlyphRenderTypes EMPTY_TYPES =
-                GlyphRenderTypes.createForColorTexture(new ResourceLocation(""));
+                GlyphRenderTypes.createForColorTexture(Objects.requireNonNull(ResourceLocation.tryParse("")));
 
         // OpenGL texture ID can be changing
         private final IntSupplier mCurrentTexture;

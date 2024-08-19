@@ -477,11 +477,11 @@ public class TextLayoutEngine extends FontResourceManager
         mFontCollections.putIfAbsent(MONOSPACED,
                 Typeface.MONOSPACED);
         // register logical fonts in default namespace
-        mFontCollections.putIfAbsent(new ResourceLocation(SANS_SERIF.getPath()),
+        mFontCollections.putIfAbsent(ResourceLocation.tryParse(SANS_SERIF.getPath()),
                 Typeface.SANS_SERIF);
-        mFontCollections.putIfAbsent(new ResourceLocation(SERIF.getPath()),
+        mFontCollections.putIfAbsent(ResourceLocation.tryParse(SERIF.getPath()),
                 Typeface.SERIF);
-        mFontCollections.putIfAbsent(new ResourceLocation(MONOSPACED.getPath()),
+        mFontCollections.putIfAbsent(ResourceLocation.tryParse(MONOSPACED.getPath()),
                 Typeface.MONOSPACED);
 
         if (sDefaultFontBehavior == DEFAULT_FONT_BEHAVIOR_IGNORE_ALL || // exclude everything
@@ -723,7 +723,7 @@ public class TextLayoutEngine extends FontResourceManager
             if (mRegisteredFonts.putIfAbsent(location, fc) == null) {
                 LOGGER.info(MARKER, "Redirect registered font '{}' to '{}'", name, location);
                 // also register in minecraft namespace
-                mRegisteredFonts.putIfAbsent(new ResourceLocation(newName), fc);
+                mRegisteredFonts.putIfAbsent(ResourceLocation.tryParse(newName), fc);
             }
         } catch (Exception e) {
             LOGGER.warn(MARKER, "Failed to redirect registered font '{}'", name);
@@ -793,6 +793,7 @@ public class TextLayoutEngine extends FontResourceManager
                     for (int i = 0; i < providers.size(); i++) {
                         var metadata = GsonHelper.convertToJsonObject(
                                 providers.get(i), "providers[" + i + "]");
+                        /*
                         var definition = Util.getOrThrow(
                                 GlyphProviderDefinition.CODEC.parse(
                                         JsonOps.INSTANCE,
@@ -800,6 +801,9 @@ public class TextLayoutEngine extends FontResourceManager
                                 ),
                                 JsonParseException::new
                         );
+                        */
+                        var definition = GlyphProviderDefinition.MAP_CODEC.codec().parse(JsonOps.INSTANCE,
+                                metadata).result().orElseThrow(() -> new JsonParseException("Error while parsing json."));
                         loadSingleFont(resources, name, bundle,
                                 resource.sourcePackId(), i, metadata, definition);
                     }

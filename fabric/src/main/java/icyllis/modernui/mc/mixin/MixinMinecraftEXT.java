@@ -29,13 +29,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinMinecraftEXT {
 
     @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;" +
-            "render(FJZ)V", shift = At.Shift.BEFORE))
+            "render(Lnet/minecraft/client/DeltaTracker;Z)V", shift = At.Shift.BEFORE))
     private void onStartRenderTick(boolean hasMemory, CallbackInfo ci) {
         ModernUIFabricClient.START_RENDER_TICK.invoker().run();
     }
 
     @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;" +
-            "render(FJZ)V", shift = At.Shift.AFTER))
+            "render(Lnet/minecraft/client/DeltaTracker;Z)V", shift = At.Shift.AFTER))
     private void onEndRenderTick(boolean hasMemory, CallbackInfo ci) {
         ModernUIFabricClient.END_RENDER_TICK.invoker().run();
     }

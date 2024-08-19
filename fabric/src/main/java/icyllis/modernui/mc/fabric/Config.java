@@ -35,9 +35,9 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.IConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.fml.config.IConfigSpec;
+import net.neoforged.fml.config.ModConfig;
 import org.jetbrains.annotations.ApiStatus;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
@@ -55,19 +55,19 @@ public final class Config {
 
     public static Client CLIENT;
 
-    private static ForgeConfigSpec CLIENT_SPEC;
+    private static ModConfigSpec CLIENT_SPEC;
 
     public static Common COMMON;
-    private static ForgeConfigSpec COMMON_SPEC;
+    private static ModConfigSpec COMMON_SPEC;
 
     public static Text TEXT;
-    public static ForgeConfigSpec TEXT_SPEC;
+    public static ModConfigSpec TEXT_SPEC;
 
     /*static final Server SERVER;
     private static final ForgeConfigSpec SERVER_SPEC;*/
 
     private static void init(boolean isClient,
-                             BiConsumer<ModConfig.Type, ForgeConfigSpec> registerConfig) {
+                             BiConsumer<ModConfig.Type, ModConfigSpec> registerConfig) {
         /*builder = new ForgeConfigSpec.Builder();
         SERVER = new Server(builder);
         SERVER_SPEC = builder.build();*/
@@ -76,22 +76,22 @@ public final class Config {
                     ModernUI.NAME_CPT + "/server.toml")); // sync to client (network)*/
     }
 
-    public static void initClientConfig(Consumer<ForgeConfigSpec> registerConfig) {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+    public static void initClientConfig(Consumer<ModConfigSpec> registerConfig) {
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         CLIENT = new Client(builder);
         CLIENT_SPEC = builder.build();
         registerConfig.accept(CLIENT_SPEC);
     }
 
-    public static void initCommonConfig(Consumer<ForgeConfigSpec> registerConfig) {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+    public static void initCommonConfig(Consumer<ModConfigSpec> registerConfig) {
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         COMMON = new Common(builder);
         COMMON_SPEC = builder.build();
         registerConfig.accept(COMMON_SPEC);
     }
 
-    public static void initTextConfig(Consumer<ForgeConfigSpec> registerConfig) {
-        ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+    public static void initTextConfig(Consumer<ModConfigSpec> registerConfig) {
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
         TEXT = new Text(builder);
         TEXT_SPEC = builder.build();
         registerConfig.accept(TEXT_SPEC);
@@ -106,7 +106,7 @@ public final class Config {
     }*/
 
     public static void reloadCommon(@Nonnull ModConfig config) {
-        final IConfigSpec<?> spec = config.getSpec();
+        final IConfigSpec spec = config.getSpec();
         if (spec == COMMON_SPEC) {
             COMMON.reload();
             LOGGER.info(MARKER, "Modern UI common config loaded/reloaded");
@@ -114,7 +114,7 @@ public final class Config {
     }
 
     public static void reloadAnyClient(@Nonnull ModConfig config) {
-        final IConfigSpec<?> spec = config.getSpec();
+        final IConfigSpec spec = config.getSpec();
         if (spec == CLIENT_SPEC) {
             CLIENT.reload();
             LOGGER.info(MARKER, "Modern UI client config loaded/reloaded");
@@ -181,68 +181,68 @@ public final class Config {
         public static final float TOOLTIP_SHADOW_RADIUS_MIN = 0;
         public static final float TOOLTIP_SHADOW_RADIUS_MAX = 32;
 
-        public final ForgeConfigSpec.BooleanValue mBlurEffect;
-        public final ForgeConfigSpec.BooleanValue mBlurWithBackground;
-        public final ForgeConfigSpec.IntValue mBackgroundDuration;
-        public final ForgeConfigSpec.IntValue mBlurRadius;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> mBackgroundColor;
-        public final ForgeConfigSpec.BooleanValue mInventoryPause;
-        public final ForgeConfigSpec.BooleanValue mTooltip;
-        public final ForgeConfigSpec.BooleanValue mRoundedTooltip;
-        public final ForgeConfigSpec.BooleanValue mCenterTooltipTitle;
-        public final ForgeConfigSpec.BooleanValue mTooltipTitleBreak;
-        public final ForgeConfigSpec.BooleanValue mExactTooltipPositioning;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> mTooltipFill;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> mTooltipStroke;
-        public final ForgeConfigSpec.IntValue mTooltipCycle;
-        public final ForgeConfigSpec.DoubleValue mTooltipWidth;
-        public final ForgeConfigSpec.DoubleValue mTooltipRadius;
-        public final ForgeConfigSpec.DoubleValue mTooltipShadowRadius;
-        public final ForgeConfigSpec.DoubleValue mTooltipShadowAlpha;
-        public final ForgeConfigSpec.BooleanValue mAdaptiveTooltipColors;
+        public final ModConfigSpec.BooleanValue mBlurEffect;
+        public final ModConfigSpec.BooleanValue mBlurWithBackground;
+        public final ModConfigSpec.IntValue mBackgroundDuration;
+        public final ModConfigSpec.IntValue mBlurRadius;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> mBackgroundColor;
+        public final ModConfigSpec.BooleanValue mInventoryPause;
+        public final ModConfigSpec.BooleanValue mTooltip;
+        public final ModConfigSpec.BooleanValue mRoundedTooltip;
+        public final ModConfigSpec.BooleanValue mCenterTooltipTitle;
+        public final ModConfigSpec.BooleanValue mTooltipTitleBreak;
+        public final ModConfigSpec.BooleanValue mExactTooltipPositioning;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> mTooltipFill;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> mTooltipStroke;
+        public final ModConfigSpec.IntValue mTooltipCycle;
+        public final ModConfigSpec.DoubleValue mTooltipWidth;
+        public final ModConfigSpec.DoubleValue mTooltipRadius;
+        public final ModConfigSpec.DoubleValue mTooltipShadowRadius;
+        public final ModConfigSpec.DoubleValue mTooltipShadowAlpha;
+        public final ModConfigSpec.BooleanValue mAdaptiveTooltipColors;
         //public final ForgeConfigSpec.IntValue mTooltipDuration;
-        public final ForgeConfigSpec.BooleanValue mDing;
+        public final ModConfigSpec.BooleanValue mDing;
         //public final ForgeConfigSpec.BooleanValue mZoom;
         //private final ForgeConfigSpec.BooleanValue hudBars;
-        public final ForgeConfigSpec.BooleanValue mForceRtl;
-        public final ForgeConfigSpec.DoubleValue mFontScale;
-        public final ForgeConfigSpec.EnumValue<WindowMode> mWindowMode;
-        public final ForgeConfigSpec.BooleanValue mUseNewGuiScale;
+        public final ModConfigSpec.BooleanValue mForceRtl;
+        public final ModConfigSpec.DoubleValue mFontScale;
+        public final ModConfigSpec.EnumValue<WindowMode> mWindowMode;
+        public final ModConfigSpec.BooleanValue mUseNewGuiScale;
         //public final ForgeConfigSpec.BooleanValue mRemoveSignature;
-        public final ForgeConfigSpec.BooleanValue mRemoveTelemetry;
+        public final ModConfigSpec.BooleanValue mRemoveTelemetry;
         //public final ForgeConfigSpec.BooleanValue mSecurePublicKey;
-        public final ForgeConfigSpec.IntValue mFramerateInactive;
-        public final ForgeConfigSpec.IntValue mFramerateMinimized;
-        public final ForgeConfigSpec.DoubleValue mMasterVolumeInactive;
-        public final ForgeConfigSpec.DoubleValue mMasterVolumeMinimized;
+        public final ModConfigSpec.IntValue mFramerateInactive;
+        public final ModConfigSpec.IntValue mFramerateMinimized;
+        public final ModConfigSpec.DoubleValue mMasterVolumeInactive;
+        public final ModConfigSpec.DoubleValue mMasterVolumeMinimized;
 
-        public final ForgeConfigSpec.IntValue mScrollbarSize;
-        public final ForgeConfigSpec.IntValue mTouchSlop;
-        public final ForgeConfigSpec.IntValue mMinScrollbarTouchTarget;
-        public final ForgeConfigSpec.IntValue mMinimumFlingVelocity;
-        public final ForgeConfigSpec.IntValue mMaximumFlingVelocity;
-        public final ForgeConfigSpec.IntValue mOverscrollDistance;
-        public final ForgeConfigSpec.IntValue mOverflingDistance;
-        public final ForgeConfigSpec.DoubleValue mVerticalScrollFactor;
-        public final ForgeConfigSpec.DoubleValue mHorizontalScrollFactor;
+        public final ModConfigSpec.IntValue mScrollbarSize;
+        public final ModConfigSpec.IntValue mTouchSlop;
+        public final ModConfigSpec.IntValue mMinScrollbarTouchTarget;
+        public final ModConfigSpec.IntValue mMinimumFlingVelocity;
+        public final ModConfigSpec.IntValue mMaximumFlingVelocity;
+        public final ModConfigSpec.IntValue mOverscrollDistance;
+        public final ModConfigSpec.IntValue mOverflingDistance;
+        public final ModConfigSpec.DoubleValue mVerticalScrollFactor;
+        public final ModConfigSpec.DoubleValue mHorizontalScrollFactor;
 
-        private final ForgeConfigSpec.ConfigValue<List<? extends String>> mBlurBlacklist;
+        private final ModConfigSpec.ConfigValue<List<? extends String>> mBlurBlacklist;
 
-        public final ForgeConfigSpec.BooleanValue mAntiAliasing;
-        public final ForgeConfigSpec.BooleanValue mAutoHinting;
+        public final ModConfigSpec.BooleanValue mAntiAliasing;
+        public final ModConfigSpec.BooleanValue mAutoHinting;
         //public final ForgeConfigSpec.BooleanValue mLinearSampling;
-        public final ForgeConfigSpec.ConfigValue<String> mFirstFontFamily;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> mFallbackFontFamilyList;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> mFontRegistrationList;
-        public final ForgeConfigSpec.BooleanValue mUseColorEmoji;
-        public final ForgeConfigSpec.BooleanValue mEmojiShortcodes;
+        public final ModConfigSpec.ConfigValue<String> mFirstFontFamily;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> mFallbackFontFamilyList;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> mFontRegistrationList;
+        public final ModConfigSpec.BooleanValue mUseColorEmoji;
+        public final ModConfigSpec.BooleanValue mEmojiShortcodes;
 
         /*public final ForgeConfigSpec.BooleanValue mSkipGLCapsError;
         public final ForgeConfigSpec.BooleanValue mShowGLCapsError;*/
 
         public WindowMode mLastWindowMode = WindowMode.NORMAL;
 
-        private Client(@Nonnull ForgeConfigSpec.Builder builder) {
+        private Client(@Nonnull ModConfigSpec.Builder builder) {
             builder.comment("Screen Config")
                     .push("screen");
 
@@ -738,14 +738,14 @@ public final class Config {
      */
     public static class Common {
 
-        public final ForgeConfigSpec.BooleanValue developerMode;
-        public final ForgeConfigSpec.IntValue oneTimeEvents;
+        public final ModConfigSpec.BooleanValue developerMode;
+        public final ModConfigSpec.IntValue oneTimeEvents;
 
         //public final ForgeConfigSpec.BooleanValue autoShutdown;
 
         //public final ForgeConfigSpec.ConfigValue<List<? extends String>> shutdownTimes;
 
-        private Common(@Nonnull ForgeConfigSpec.Builder builder) {
+        private Common(@Nonnull ModConfigSpec.Builder builder) {
             builder.comment("Developer Config")
                     .push("developer");
 
@@ -801,30 +801,30 @@ public final class Config {
         public static final int REHASH_MAX = 2000;*/
 
         //final ForgeConfigSpec.BooleanValue globalRenderer;
-        public final ForgeConfigSpec.BooleanValue mAllowShadow;
-        public final ForgeConfigSpec.BooleanValue mFixedResolution;
-        public final ForgeConfigSpec.DoubleValue mBaseFontSize;
-        public final ForgeConfigSpec.DoubleValue mBaselineShift;
-        public final ForgeConfigSpec.DoubleValue mShadowOffset;
-        public final ForgeConfigSpec.DoubleValue mOutlineOffset;
+        public final ModConfigSpec.BooleanValue mAllowShadow;
+        public final ModConfigSpec.BooleanValue mFixedResolution;
+        public final ModConfigSpec.DoubleValue mBaseFontSize;
+        public final ModConfigSpec.DoubleValue mBaselineShift;
+        public final ModConfigSpec.DoubleValue mShadowOffset;
+        public final ModConfigSpec.DoubleValue mOutlineOffset;
         //public final ForgeConfigSpec.BooleanValue mSuperSampling;
         //public final ForgeConfigSpec.BooleanValue mAlignPixels;
-        public final ForgeConfigSpec.IntValue mCacheLifespan;
+        public final ModConfigSpec.IntValue mCacheLifespan;
         //public final ForgeConfigSpec.IntValue mRehashThreshold;
-        public final ForgeConfigSpec.EnumValue<TextDirection> mTextDirection;
+        public final ModConfigSpec.EnumValue<TextDirection> mTextDirection;
         //public final ForgeConfigSpec.BooleanValue mBitmapReplacement;
         //public final ForgeConfigSpec.BooleanValue mUseDistanceField;
         //public final ForgeConfigSpec.BooleanValue mUseVanillaFont;
-        public final ForgeConfigSpec.BooleanValue mUseTextShadersInWorld;
-        public final ForgeConfigSpec.EnumValue<DefaultFontBehavior> mDefaultFontBehavior;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> mDefaultFontRuleSet;
-        public final ForgeConfigSpec.BooleanValue mUseComponentCache;
-        public final ForgeConfigSpec.BooleanValue mAllowAsyncLayout;
-        public final ForgeConfigSpec.EnumValue<LineBreakStyle> mLineBreakStyle;
-        public final ForgeConfigSpec.EnumValue<LineBreakWordStyle> mLineBreakWordStyle;
-        public final ForgeConfigSpec.BooleanValue mSmartSDFShaders;
-        public final ForgeConfigSpec.BooleanValue mComputeDeviceFontSize;
-        public final ForgeConfigSpec.BooleanValue mAllowSDFTextIn2D;
+        public final ModConfigSpec.BooleanValue mUseTextShadersInWorld;
+        public final ModConfigSpec.EnumValue<DefaultFontBehavior> mDefaultFontBehavior;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> mDefaultFontRuleSet;
+        public final ModConfigSpec.BooleanValue mUseComponentCache;
+        public final ModConfigSpec.BooleanValue mAllowAsyncLayout;
+        public final ModConfigSpec.EnumValue<LineBreakStyle> mLineBreakStyle;
+        public final ModConfigSpec.EnumValue<LineBreakWordStyle> mLineBreakWordStyle;
+        public final ModConfigSpec.BooleanValue mSmartSDFShaders;
+        public final ModConfigSpec.BooleanValue mComputeDeviceFontSize;
+        public final ModConfigSpec.BooleanValue mAllowSDFTextIn2D;
 
         //private final ForgeConfigSpec.BooleanValue antiAliasing;
         //private final ForgeConfigSpec.BooleanValue highPrecision;
@@ -833,7 +833,7 @@ public final class Config {
         //private final ForgeConfigSpec.IntValue resolutionLevel;
         //private final ForgeConfigSpec.IntValue defaultFontSize;
 
-        private Text(@Nonnull ForgeConfigSpec.Builder builder) {
+        private Text(@Nonnull ModConfigSpec.Builder builder) {
             builder.comment("Text Engine Config")
                     .push("text");
 

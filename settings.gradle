@@ -34,9 +34,9 @@ if (file('../ModernUI').exists()) {
 
 include 'common'
 
-include 'forge'
-project(':forge').name = "ModernUI-Forge"
-include 'neoforge'
-project(':neoforge').name = "ModernUI-NeoForge"
+//include 'forge'
+//project(':forge').name = "ModernUI-Forge"
+//include 'neoforge'
+//project(':neoforge').name = "ModernUI-NeoForge"
 include 'fabric'
 project(':fabric').name = "ModernUI-Fabric"

@@ -43,7 +43,7 @@ public enum BlurHandler {
     INSTANCE;
 
     // minecraft namespace
-    private static final ResourceLocation BLUR_POST_EFFECT = new ResourceLocation("shaders/post/blur_fast.json");
+    private static final ResourceLocation BLUR_POST_EFFECT = ResourceLocation.tryParse("shaders/post/blur_fast.json");
 
     /**
      * Config values
@@ -266,14 +266,14 @@ public enum BlurHandler {
         Matrix4f pose = gr.pose().last().pose();
         int z = 0;
         if (minecraft.level == null) {
-            consumer.vertex(pose, x2, y1, z)
-                    .color(25, 25, 25, 255).endVertex();
-            consumer.vertex(pose, x1, y1, z)
-                    .color(25, 25, 25, 255).endVertex();
-            consumer.vertex(pose, x1, y2, z)
-                    .color(25, 25, 25, 255).endVertex();
-            consumer.vertex(pose, x2, y2, z)
-                    .color(25, 25, 25, 255).endVertex();
+            consumer.addVertex(pose, x2, y1, z)
+                    .setColor(25, 25, 25, 255);
+            consumer.addVertex(pose, x1, y1, z)
+                    .setColor(25, 25, 25, 255);
+            consumer.addVertex(pose, x1, y2, z)
+                    .setColor(25, 25, 25, 255);
+            consumer.addVertex(pose, x2, y2, z)
+                    .setColor(25, 25, 25, 255);
         } else {
             if (mBlurring && !mBlurLoaded) {
                 MuiModApi.get().loadEffect(minecraft.gameRenderer, BLUR_POST_EFFECT);
@@ -281,17 +281,17 @@ public enum BlurHandler {
                 mBlurLoaded = true;
             }
             int color = mBackgroundColor[1];
-            consumer.vertex(pose, x2, y1, z)
-                    .color(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24).endVertex();
+            consumer.addVertex(pose, x2, y1, z)
+                    .setColor(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24);
             color = mBackgroundColor[0];
-            consumer.vertex(pose, x1, y1, z)
-                    .color(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24).endVertex();
+            consumer.addVertex(pose, x1, y1, z)
+                    .setColor(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24);
             color = mBackgroundColor[3];
-            consumer.vertex(pose, x1, y2, z)
-                    .color(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24).endVertex();
+            consumer.addVertex(pose, x1, y2, z)
+                    .setColor(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24);
             color = mBackgroundColor[2];
-            consumer.vertex(pose, x2, y2, z)
-                    .color(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24).endVertex();
+            consumer.addVertex(pose, x2, y2, z)
+                    .setColor(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >>> 24);
         }
         gr.flush();
     }
