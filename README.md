@@ -1,5 +1,5 @@
-#### This fork added support for 1.21 fabric. Download it on [Release](https://github.com/RedDragon0293/ModernUI-MC/releases).
-#### 这个分支添加了对1.21 fabric的支持。请前往[Release](https://github.com/RedDragon0293/ModernUI-MC/releases)页面下载。
+#### This fork added support for 1.21 fabric. Download it on [Release](https://github.com/RedDragon0293/ModernUI-MC/releases). Requires Forge-Config-Api-Port 21.0.0 or above.
+#### 这个分支添加了对1.21 fabric的支持。请前往[Release](https://github.com/RedDragon0293/ModernUI-MC/releases)页面下载。要求Forge-Config-Api-Port版本为21.0.0或更高。
 我一直在等作者适配，结果等了实在太久忍无可忍，决定亲自出马
 #### ~~别咕咕了 球球了~~
 
